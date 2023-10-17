@@ -6,6 +6,7 @@ module.exports = async (req, res) => {
         id: uuid(),
         name: req.body.name,
         completed: false,
+        created: new Date().toISOString(),
     };
 
     await db.storeItem(item);
