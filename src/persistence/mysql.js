@@ -104,9 +104,10 @@ async function storeItem(item) {
 
 async function updateItem(id, item) {
     return new Promise((acc, rej) => {
+        const completedTimestamp = item.completed ? new Date().toISOString().slice(0, 19).replace('T', ' ') : null;
         pool.query(
-            'UPDATE todo_items SET name=?, completed=? WHERE id=?',
-            [item.name, item.completed ? 1 : 0, id],
+            'UPDATE todo_items SET name=?, completed=?, completedTimestamp=? WHERE id=?',
+            [item.name, item.completed ? 1 : 0, completedTimestamp, id],
             err => {
                 if (err) return rej(err);
                 acc();
