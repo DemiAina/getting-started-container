@@ -151,6 +151,10 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
         );
     };
 
+    // Format the timestamps to a readable format
+    const createdFormatted = new Date(item.created).toLocaleString();
+    const completedFormatted = item.completedTimestamp ? new Date(item.completedTimestamp).toLocaleString() : null;
+
     return (
         <Container fluid className={`item ${item.completed && 'completed'}`}>
             <Row>
@@ -173,7 +177,7 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                         />
                     </Button>
                 </Col>
-                <Col xs={10} className="name">
+                <Col xs={8} className="name">
                     {item.name}
                 </Col>
                 <Col xs={1} className="text-center remove">
@@ -185,6 +189,12 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                     >
                         <i className="fa fa-trash text-danger" />
                     </Button>
+                </Col>
+                <Col xs={2}>
+                    Created: {createdFormatted}
+                    {completedFormatted && (
+                        <div>Completed: {completedFormatted}</div>
+                    )}
                 </Col>
             </Row>
         </Container>
