@@ -39,14 +39,14 @@ async function init() {
 
     return new Promise((acc, rej) => {
         pool.query(
-            'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean) DEFAULT CHARSET utf8mb4',
-            err => {
-                if (err) return rej(err);
-
-                console.log(`Connected to mysql db at host ${HOST}`);
-                acc();
+    'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP, completedTimestamp TIMESTAMP) DEFAULT CHARSET utf8mb4',
+    err => {
+        if (err) return rej(err);
+        console.log(`Connected to mysql db at host ${HOST}`);
+        acc();
             },
         );
+
     });
 }
 
