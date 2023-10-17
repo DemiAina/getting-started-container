@@ -1,9 +1,24 @@
+function DarkModeToggle() {
+    const [darkMode, setDarkMode] = React.useState(false);
+
+    React.useEffect(() => {
+        document.body.classList.toggle('dark-mode', darkMode);
+    }, [darkMode]);
+
+    return (
+        <button onClick={() => setDarkMode(prev => !prev)}>
+            Toggle Dark Mode
+        </button>
+    );
+}
+
 function App() {
     const { Container, Row, Col } = ReactBootstrap;
     return (
         <Container>
             <Row>
                 <Col md={{ offset: 3, span: 6 }}>
+                    <DarkModeToggle />
                     <TodoListCard />
                 </Col>
             </Row>
@@ -136,6 +151,11 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
         );
     };
 
+    const createdFormatted = new Date(item.created).toLocaleString();
+    const completedFormatted = item.completedTimestamp ? new Date(item.completedTimestamp).toLocaleString() : null;
+
+    console.log(item.completedTimestamp);
+
     return (
         <Container fluid className={`item ${item.completed && 'completed'}`}>
             <Row>
@@ -158,7 +178,7 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                         />
                     </Button>
                 </Col>
-                <Col xs={10} className="name">
+                <Col xs={8} className="name">
                     {item.name}
                 </Col>
                 <Col xs={1} className="text-center remove">
@@ -170,6 +190,12 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                     >
                         <i className="fa fa-trash text-danger" />
                     </Button>
+                </Col>
+                <Col xs={2}>
+                    Created: {createdFormatted}
+                    {completedFormatted && (
+                        <div>Completed: {completedFormatted}</div>
+                    )}
                 </Col>
             </Row>
         </Container>
