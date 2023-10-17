@@ -65,10 +65,11 @@ async function getItems() {
             if (err) return rej(err);
             acc(
                 rows.map(item =>
-                    Object.assign({}, item, {
-                        completed: item.completed === 1,
-                    }),
-                ),
+    Object.assign({}, item, {
+        completed: item.completed === 1,
+        completedTimestamp: item.completedTimestamp ? new Date(item.completedTimestamp) : null,
+    }),
+)
             );
         });
     });
@@ -80,10 +81,11 @@ async function getItem(id) {
             if (err) return rej(err);
             acc(
                 rows.map(item =>
-                    Object.assign({}, item, {
-                        completed: item.completed === 1,
-                    }),
-                )[0],
+    Object.assign({}, item, {
+        completed: item.completed === 1,
+        completedTimestamp: item.completedTimestamp ? new Date(item.completedTimestamp) : null,
+    }),
+)[0]
             );
         });
     });
