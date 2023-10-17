@@ -1,9 +1,24 @@
+function DarkModeToggle() {
+    const [darkMode, setDarkMode] = React.useState(false);
+
+    React.useEffect(() => {
+        document.body.classList.toggle('dark-mode', darkMode);
+    }, [darkMode]);
+
+    return (
+        <button onClick={() => setDarkMode(prev => !prev)}>
+            Toggle Dark Mode
+        </button>
+    );
+}
+
 function App() {
     const { Container, Row, Col } = ReactBootstrap;
     return (
         <Container>
             <Row>
                 <Col md={{ offset: 3, span: 6 }}>
+                    <DarkModeToggle />
                     <TodoListCard />
                 </Col>
             </Row>
