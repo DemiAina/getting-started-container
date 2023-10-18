@@ -39,14 +39,14 @@ async function init() {
 
     return new Promise((acc, rej) => {
         pool.query(
-            'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean) DEFAULT CHARSET utf8mb4',
-            err => {
-                if (err) return rej(err);
-
-                console.log(`Connected to mysql db at host ${HOST}`);
-                acc();
+    'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP, completedTimestamp TIMESTAMP) DEFAULT CHARSET utf8mb4',
+    err => {
+        if (err) return rej(err);
+        console.log(`Connected to mysql db at host ${HOST}`);
+        acc();
             },
         );
+
     });
 }
 
@@ -62,13 +62,15 @@ async function teardown() {
 async function getItems() {
     return new Promise((acc, rej) => {
         pool.query('SELECT * FROM todo_items', (err, rows) => {
+            console.log(rows);
             if (err) return rej(err);
             acc(
                 rows.map(item =>
-                    Object.assign({}, item, {
-                        completed: item.completed === 1,
-                    }),
-                ),
+    Object.assign({}, item, {
+        completed: item.completed === 1,
+        completedTimestamp: item.completedTimestamp ? new Date(item.completedTimestamp) : null,
+    }),
+)
             );
         });
     });
@@ -80,10 +82,11 @@ async function getItem(id) {
             if (err) return rej(err);
             acc(
                 rows.map(item =>
-                    Object.assign({}, item, {
-                        completed: item.completed === 1,
-                    }),
-                )[0],
+    Object.assign({}, item, {
+        completed: item.completed === 1,
+        completedTimestamp: item.completedTimestamp ? new Date(item.completedTimestamp) : null,
+    }),
+)[0]
             );
         });
     });
@@ -104,9 +107,10 @@ async function storeItem(item) {
 
 async function updateItem(id, item) {
     return new Promise((acc, rej) => {
+        const completedTimestamp = item.completed ? new Date().toISOString().slice(0, 19).replace('T', ' ') : null;
         pool.query(
-            'UPDATE todo_items SET name=?, completed=? WHERE id=?',
-            [item.name, item.completed ? 1 : 0, id],
+            'UPDATE todo_items SET name=?, completed=?, completedTimestamp=? WHERE id=?',
+            [item.name, item.completed ? 1 : 0, completedTimestamp, id],
             err => {
                 if (err) return rej(err);
                 acc();
