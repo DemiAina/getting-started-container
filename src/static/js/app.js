@@ -151,9 +151,10 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
         );
     };
 
-    // Format the timestamps to a readable format
     const createdFormatted = new Date(item.created).toLocaleString();
     const completedFormatted = item.completedTimestamp ? new Date(item.completedTimestamp).toLocaleString() : null;
+
+    console.log(item.completedTimestamp);
 
     return (
         <Container fluid className={`item ${item.completed && 'completed'}`}>

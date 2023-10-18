@@ -17,14 +17,13 @@ function init() {
             if (process.env.NODE_ENV !== 'test')
                 console.log(`Using sqlite database at ${location}`);
 
-            db.run(
-                'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean)',
-                (err, result) => {
-                    if (err) return rej(err);
-                    acc();
-                },
-            );
-        });
+             db.run(
+        'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean, completedTimestamp DATETIME)',
+        (err, result) => {
+            if (err) return rej(err);
+            acc();
+        },
+    );       });
     });
 }
 

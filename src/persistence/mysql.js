@@ -62,6 +62,7 @@ async function teardown() {
 async function getItems() {
     return new Promise((acc, rej) => {
         pool.query('SELECT * FROM todo_items', (err, rows) => {
+            console.log(rows);
             if (err) return rej(err);
             acc(
                 rows.map(item =>
